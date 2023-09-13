@@ -29,4 +29,41 @@ environments:
             python_wheel_task:
               package_name: "branch_check_dbx"
               entry_point: "stag-test" 
+
+      - name: "Data-preprocessing"
+        tasks:
+            - task_key: "main"
+              <<: *basic-static-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "model_build"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]
+       
+      - name: "Model-Training"
+        tasks:
+            - task_key: "main"
+              <<: *my-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "model_train"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]     
+
+
+      - name: "Model-Inferencing"
+        tasks:
+            - task_key: "main"
+              <<: *basic-static-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "model_inference"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"] 
+
+      - name: "Data-Drift"
+        tasks:
+            - task_key: "main"
+              <<: *basic-static-cluster
+              python_wheel_task:
+                     package_name: "demo_project"
+                     entry_point: "data_drift"
+                     parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]
       

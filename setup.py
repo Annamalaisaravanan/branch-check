@@ -14,10 +14,17 @@ PACKAGE_REQUIREMENTS = ["pyyaml"]
 # please note that these packages are already available in DBR, there is no need to install them on DBR.
 LOCAL_REQUIREMENTS = [
     "pyspark==3.2.1",
+    "boto3",
+    #"protobuf==3.20.1",
     "delta-spark==1.1.0",
-    "scikit-learn",
-    "pandas",
+    "scikit-learn==1.2.0",
+    "databricks-sdk",
+    "databricks-feature-store",
+    #"databricks-registry-webhooks",
+    "evidently",
+    "pandas==1.5.3",
     "mlflow",
+    "urllib3"
 ]
 
 TEST_REQUIREMENTS = [
@@ -32,13 +39,16 @@ setup(
     name="branch_check_dbx",
     packages=find_packages(exclude=["tests", "tests.*"]),
     setup_requires=["setuptools","wheel"],
-    install_requires=PACKAGE_REQUIREMENTS,
+    install_requires=LOCAL_REQUIREMENTS,
     extras_require={"local": LOCAL_REQUIREMENTS, "test": TEST_REQUIREMENTS},
     entry_points = {
         "console_scripts": [
             "Model-dev = branch_check_dbx.tasks.modeldev:entrypoint",
-            "stag-test = branch_check_dbx.tasks.teststag:entrypoint"
-            
+            "stag-test = branch_check_dbx.tasks.teststag:entrypoint",
+            "model_build = demo_project.tasks.model_build:entrypoint",
+            "model_train = demo_project.tasks.model_train:entrypoint", 
+            "model_inference = demo_project.tasks.model_inference:entrypoint",
+            "data_drift = demo_project.tasks.data_drift:entrypoint"
     ]},
     version=__version__,
     description="",
