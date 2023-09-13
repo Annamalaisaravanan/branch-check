@@ -41,7 +41,7 @@ environments:
             - task_key: "main"
               <<: *basic-static-cluster
               python_wheel_task:
-                     package_name: "demo_project"
+                     package_name: "branch_check_dbx"
                      entry_point: "model_build"
                      parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]
        
@@ -50,7 +50,7 @@ environments:
             - task_key: "main"
               <<: *my-cluster
               python_wheel_task:
-                     package_name: "demo_project"
+                     package_name: "branch_check_dbx"
                      entry_point: "model_train"
                      parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]     
 
@@ -60,7 +60,7 @@ environments:
             - task_key: "main"
               <<: *basic-static-cluster
               python_wheel_task:
-                     package_name: "demo_project"
+                     package_name: "branch_check_dbx"
                      entry_point: "model_inference"
                      parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"] 
 
@@ -69,7 +69,7 @@ environments:
             - task_key: "main"
               <<: *basic-static-cluster
               python_wheel_task:
-                     package_name: "demo_project"
+                     package_name: "branch_check_dbx"
                      entry_point: "data_drift"
                      parameters: ["--conf-file", "file:fuse://conf/tasks/model.yml"]
       
