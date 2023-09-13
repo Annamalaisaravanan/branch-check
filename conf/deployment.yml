@@ -10,6 +10,12 @@ custom:
       num_workers: 1
       node_type_id: "m5d.large"
 
+  my-cluster: &my-cluster
+    new_cluster:
+      <<: *basic-cluster-props
+      num_workers: 1
+      node_type_id: "m5d.large"
+
 environments:
   default:
     workflows:
