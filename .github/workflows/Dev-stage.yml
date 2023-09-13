@@ -42,9 +42,9 @@ jobs:
         run: |
           echo "Launching unit tests"
 
-      # - name: Remove Databricks Secret
-      #   run: |
-      #       databricks secrets delete-scope --scope secrets-scope
+      - name: Remove Databricks Secret
+        run: |
+            databricks secrets delete-scope --scope secrets-scope
             
 
       - name: Create Databricks Secrets Scope
