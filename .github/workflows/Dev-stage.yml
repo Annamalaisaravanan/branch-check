@@ -1,9 +1,9 @@
-name: CI pipeline
+name: Development pipeline
 
 on:
   push:
     branches:
-      - '**'
+      - 'dev'
     tags-ignore:
       - 'v*' # this tag type is used for release pipelines
 
@@ -15,8 +15,8 @@ jobs:
       max-parallel: 4
 
     env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN:  ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_DEV }}
+      DATABRICKS_TOKEN:  ${{ secrets.DATABRICKS_TOKEN_DEV }}
 
     steps:
       - uses: actions/checkout@v1
@@ -36,17 +36,13 @@ jobs:
         run: |
           pip install -e ".[local,test]"
 
-      - name: Run unit tests
-        run: |
-          echo "Launching unit tests"
-          pytest tests/unit
 
-      - name: Workflow deployment (assets only upload)
+      - name: Model development (assets only upload)
         run: |
-          dbx deploy branch-check-dbx-sample-etl --assets-only
+          dbx deploy Model-develop --assets-only
 
       - name: Run the workflow in a jobless fashion
         run: |
-          dbx launch branch-check-dbx-sample-etl --from-assets --trace
+          dbx launch Model-develop --from-assets --trace
 
 

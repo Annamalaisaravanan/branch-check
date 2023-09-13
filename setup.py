@@ -36,8 +36,9 @@ setup(
     extras_require={"local": LOCAL_REQUIREMENTS, "test": TEST_REQUIREMENTS},
     entry_points = {
         "console_scripts": [
-            "etl = branch_check_dbx.tasks.sample_etl_task:entrypoint",
-            "ml = branch_check_dbx.tasks.sample_ml_task:entrypoint",
+            "Model-dev = branch_check_dbx.tasks.modeldev:entrypoint",
+            "stag-test = branch_check_dbx.tasks.teststag:entrypoint"
+            
     ]},
     version=__version__,
     description="",
