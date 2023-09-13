@@ -47,9 +47,9 @@ jobs:
           run: |
             dbx launch Model-develop --from-assets --trace
 
-        - name: Delete Databricks Secrets Scope
-          run: |
-            databricks secrets delete-scope --scope secrets-scope
+        # - name: Delete Databricks Secrets Scope
+        #   r
+        #     databricks secrets delete-scope --scope secrets-scope
 
         - name: Create Databricks Secrets Scope
           run: |
@@ -60,8 +60,8 @@ jobs:
           run: |
             databricks secrets put --scope secrets-scope --key aws-access-key --string-value "${{ secrets.AWS_ACCESS_KEY }}"
             databricks secrets put --scope secrets-scope --key aws-secret-key --string-value "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-            databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST }}"
-            databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN }}"
+            databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST_PROD }}"
+            databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN_PROD }}"
 
             
         - name: Workflow Data-preprocessing deployment (assets only upload)

@@ -56,8 +56,8 @@ jobs:
         run: |
           databricks secrets put --scope secrets-scope --key aws-access-key --string-value "${{ secrets.AWS_ACCESS_KEY }}"
           databricks secrets put --scope secrets-scope --key aws-secret-key --string-value "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST }}"
-          databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN }}"
+          databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST_DEV }}"
+          databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN_DEV }}"
 
          
       - name: Workflow Data-preprocessing deployment (assets only upload)
