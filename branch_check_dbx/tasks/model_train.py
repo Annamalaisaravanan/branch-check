@@ -1,6 +1,6 @@
 import pandas as pd
 
-from demo_project.common import Task
+from branch_check_dbx.common import Task
 
 from sklearn.model_selection import train_test_split
 

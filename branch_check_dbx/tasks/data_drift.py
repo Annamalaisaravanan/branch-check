@@ -1,4 +1,4 @@
-from demo_project.common import Task
+from branch_check_dbx.common import Task
 
 import json
 import pandas as pd

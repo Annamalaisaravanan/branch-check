@@ -1,4 +1,4 @@
-from demo_project.common import Task
+from branch_check_dbx.common import Task
 #from databricks_registry_webhooks import RegistryWebhooksClient, JobSpec, HttpUrlSpec
 import boto3
 import pandas as pd
