@@ -8,7 +8,7 @@ on:
       - 'v*' # this tag type is used for release pipelines
 
 jobs:
-  ci-pipeline:
+ ci-pipeline:
       runs-on: ubuntu-latest
       strategy:
         max-parallel: 4
@@ -99,12 +99,12 @@ jobs:
             dbx launch Data-Drift --from-assets --trace 
       
 
-      - name: Workflow deployment (assets only upload)
-        run: |
-          dbx deploy Prod-stag --assets-only
+        - name: Workflow deployment (assets only upload)
+          run: |
+            dbx deploy Prod-stag --assets-only
 
-      - name: Run the workflow in a jobless fashion
-        run: |
-          dbx launch Prod-stag --from-assets --trace
+        - name: Run the workflow in a jobless fashion
+          run: |
+            dbx launch Prod-stag --from-assets --trace
 
 
