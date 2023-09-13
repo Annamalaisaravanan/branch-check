@@ -36,6 +36,9 @@ jobs:
         run: |
           pip install -e ".[local,test]"
 
+      - name: Run unit tests
+        run: |
+          echo "Launching unit tests"
 
       - name: Model development (assets only upload)
         run: |
