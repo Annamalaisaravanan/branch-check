@@ -42,19 +42,15 @@ jobs:
         run: |
           echo "Launching unit tests"
 
-      - name: Model development (assets only upload)
-        run: |
-          dbx deploy Model-develop --assets-only
-
-      - name: Run the workflow in a jobless fashion
-        run: |
-          dbx launch Model-develop --from-assets --trace
+      - name: Remove Databricks Secret
+          run: |
+            databricks secrets delete-scope --scope secrets-scope
+            
 
       - name: Create Databricks Secrets Scope
         run: |
-          databricks secrets create-scope --scope secrets-scope
-          databricks secrets create-scope --scope feature-store-example-read
-          databricks secrets create-scope --scope feature-store-example-write
+          databricks secrets create-scope --scope secrets-scope1
+         
 
       - name: Set Databricks Secrets
         run: |
@@ -63,12 +59,7 @@ jobs:
           databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST }}"
           databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN }}"
 
-          databricks secrets put --scope feature-store-example-read --key dynamo-access-key-id --string-value "${{ secrets.C5I_ACCESS_KEY }}"
-          databricks secrets put --scope feature-store-example-read --key dynamo-secret-access-key --string-value "${{ secrets.C5I_SECRET_KEY }}"
-
-          databricks secrets put --scope feature-store-example-write --key dynamo-access-key-id --string-value "${{ secrets.C5I_ACCESS_KEY }}"
-          databricks secrets put --scope feature-store-example-write --key dynamo-secret-access-key --string-value "${{ secrets.C5I_SECRET_KEY }}"
-
+         
       - name: Workflow Data-preprocessing deployment (assets only upload)
         run: |
           dbx deploy Data-preprocessing --assets-only 
