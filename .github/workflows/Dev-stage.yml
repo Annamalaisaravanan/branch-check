@@ -50,66 +50,55 @@ jobs:
         run: |
           dbx launch Model-develop --from-assets --trace
 
-      # - name: Remove Databricks Secret
-      #     run: |
-      #       databricks secrets delete-scope --scope secrets-scope
-      #       databricks secrets delete-scope --scope feature-store-example-read
-      #       databricks secrets delete-scope --scope feature-store-example-write
+      - name: Create Databricks Secrets Scope
+        run: |
+          databricks secrets create-scope --scope secrets-scope
+          databricks secrets create-scope --scope feature-store-example-read
+          databricks secrets create-scope --scope feature-store-example-write
 
-        # - name: Remove Databricks Secret
-        #   run: |
-        #     databricks secrets delete-scope --scope feature-store-example-read
-        #     databricks secrets delete-scope --scope feature-store-example-write
+      - name: Set Databricks Secrets
+        run: |
+          databricks secrets put --scope secrets-scope --key aws-access-key --string-value "${{ secrets.AWS_ACCESS_KEY }}"
+          databricks secrets put --scope secrets-scope --key aws-secret-key --string-value "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST }}"
+          databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN }}"
 
-        - name: Create Databricks Secrets Scope
-          run: |
-            databricks secrets create-scope --scope secrets-scope
-            databricks secrets create-scope --scope feature-store-example-read
-            databricks secrets create-scope --scope feature-store-example-write
+          databricks secrets put --scope feature-store-example-read --key dynamo-access-key-id --string-value "${{ secrets.C5I_ACCESS_KEY }}"
+          databricks secrets put --scope feature-store-example-read --key dynamo-secret-access-key --string-value "${{ secrets.C5I_SECRET_KEY }}"
 
-        - name: Set Databricks Secrets
-          run: |
-            databricks secrets put --scope secrets-scope --key aws-access-key --string-value "${{ secrets.AWS_ACCESS_KEY }}"
-            databricks secrets put --scope secrets-scope --key aws-secret-key --string-value "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-            databricks secrets put --scope secrets-scope --key databricks-host --string-value "${{ secrets.DATABRICKS_HOST }}"
-            databricks secrets put --scope secrets-scope --key databricks-token --string-value "${{ secrets.DATABRICKS_TOKEN }}"
+          databricks secrets put --scope feature-store-example-write --key dynamo-access-key-id --string-value "${{ secrets.C5I_ACCESS_KEY }}"
+          databricks secrets put --scope feature-store-example-write --key dynamo-secret-access-key --string-value "${{ secrets.C5I_SECRET_KEY }}"
 
-            databricks secrets put --scope feature-store-example-read --key dynamo-access-key-id --string-value "${{ secrets.C5I_ACCESS_KEY }}"
-            databricks secrets put --scope feature-store-example-read --key dynamo-secret-access-key --string-value "${{ secrets.C5I_SECRET_KEY }}"
+      - name: Workflow Data-preprocessing deployment (assets only upload)
+        run: |
+          dbx deploy Data-preprocessing --assets-only 
 
-            databricks secrets put --scope feature-store-example-write --key dynamo-access-key-id --string-value "${{ secrets.C5I_ACCESS_KEY }}"
-            databricks secrets put --scope feature-store-example-write --key dynamo-secret-access-key --string-value "${{ secrets.C5I_SECRET_KEY }}"
+      - name: Run the Data-preprocessing workflow in a jobless fashion
+        run: |
+          dbx launch Data-preprocessing --from-assets --trace 
 
-        - name: Workflow Data-preprocessing deployment (assets only upload)
-          run: |
-            dbx deploy Data-preprocessing --assets-only 
+      - name: Workflow Model-Training deployment (assets only upload)
+        run: |
+          dbx deploy Model-Training --assets-only 
 
-        - name: Run the Data-preprocessing workflow in a jobless fashion
-          run: |
-            dbx launch Data-preprocessing --from-assets --trace 
+      - name: Run the Model-Training workflow in a jobless fashion
+        run: |
+          dbx launch Model-Training --from-assets --trace 
 
-        - name: Workflow Model-Training deployment (assets only upload)
-          run: |
-            dbx deploy Model-Training --assets-only 
+      # - name: Workflow Model-Inferencing deployment (assets only upload)
+      #   run: |
+      #     dbx deploy Model-Inferencing --assets-only 
 
-        - name: Run the Model-Training workflow in a jobless fashion
-          run: |
-            dbx launch Model-Training --from-assets --trace 
+      # - name: Run the Model-Inferencing workflow in a jobless fashion
+      #   run: |
+      #     dbx launch Model-Inferencing --from-assets --trace 
 
-        # - name: Workflow Model-Inferencing deployment (assets only upload)
-        #   run: |
-        #     dbx deploy Model-Inferencing --assets-only 
+      - name: Workflow Mlflow Webhook deployment (assets only upload)
+        run: |
+          dbx deploy Data-Drift --assets-only 
 
-        # - name: Run the Model-Inferencing workflow in a jobless fashion
-        #   run: |
-        #     dbx launch Model-Inferencing --from-assets --trace 
-
-        - name: Workflow Mlflow Webhook deployment (assets only upload)
-          run: |
-            dbx deploy Data-Drift --assets-only 
-
-        - name: Run the Mlflow Webhook workflow in a jobless fashion
-          run: |
-            dbx launch Data-Drift --from-assets --trace 
+      - name: Run the Mlflow Webhook workflow in a jobless fashion
+        run: |
+          dbx launch Data-Drift --from-assets --trace 
 
 
